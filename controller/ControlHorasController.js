@@ -1,9 +1,12 @@
 const ControlHorasModel = require('../model/ControlHorasModel');
 
 const AgregarControlHoras = async(req,res) => {
-    const { chTotalHora, idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras} = req.body;
+    const { idUsuarioFK, idMaquinaFK, chCantidadHoras} = req.body[0];
+    
+    console.log("Controlador BAckend");
+    console.log("controller",idMaquinaFK,idUsuarioFK,chCantidadHoras);
     const controlHorasModel = new ControlHorasModel(
-        chTotalHora, idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras
+        idUsuarioFK, idMaquinaFK, chCantidadHoras
     );
 
     const response = await controlHorasModel.AgregarControlHoras();

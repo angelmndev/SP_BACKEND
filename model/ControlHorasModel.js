@@ -1,30 +1,32 @@
 const db = require('../config/db');
 
 class ControlHorasModel{
-    #chTotalHora;
     #idUsuarioFK;
-    #chFecha;
     #idMaquinaFK;
     #chCantidadHoras;
 
-    constructor(chTotalHora, idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras){    
-        this.#chTotalHora = chTotalHora;        
+    constructor(idUsuarioFK, idMaquinaFK, chCantidadHoras){    
         this.#idUsuarioFK = idUsuarioFK;
-        this.#chFecha = chFecha;
         this.#idMaquinaFK = idMaquinaFK;
         this.#chCantidadHoras = chCantidadHoras;
     }
 
     async AgregarControlHoras(){
-        console.log(this.#chFecha);
+
+        // const sqlSentenceTotaHoras = `SELECT sum(chCantidadHoras) as chTotalHora FROM ?? WHERE idMaquinaFK = ? AND chEstado = '1'`
+        // const sqlPreparingTotalHoras = ['controlhoras',this.#idMaquinaFK];
+        // const sql = await db.format(sqlSentenceTotaHoras,sqlPreparingTotalHoras);
+        // const response = await db.query(sql);
+        // const chTotalHora = response[0].chTotalHora == null ? this.#chCantidadHoras : response[0].chTotalHora;
+
+       // console.log("total horas: ",chTotalHora);
         try {
             const sqlSentence = `INSERT INTO ?? SET ?`;
-            const sqlPreparing = ['controlHoras',{
-                chTotalHora:this.#chTotalHora,
-                idUsuarioFK:this.#idUsuarioFK,
-                chFecha: this.#chFecha,
+            const sqlPreparing = ['controlHoras',{             
+                idUsuarioFK:this.#idUsuarioFK,             
                 idMaquinaFK: this.#idMaquinaFK,
-                chCantidadHoras: this.#chCantidadHoras
+                chCantidadHoras: this.#chCantidadHoras,
+                chEstado: '1'
             }]
             const sql = await db.format(sqlSentence,sqlPreparing);
             const response = await db.query(sql);
@@ -39,19 +41,20 @@ class ControlHorasModel{
 
     static async ListarControlHoras(){
         const sqlSentence = `SELECT
-        idControlHora, chTotalHora,idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras,maqNombre,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 1 THEN chCantidadHoras ELSE '' END) AS Domingo,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 2 THEN chCantidadHoras ELSE '' END) AS lunes,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 3 THEN chCantidadHoras ELSE '' END) AS Martes,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 4 THEN chCantidadHoras ELSE '' END) AS Miercoles,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 5 THEN chCantidadHoras ELSE '' END) AS Jueves,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 6 THEN chCantidadHoras ELSE '' END) AS Viernes,
-        MAX(CASE WHEN DAYOFWEEK(chFecha) = 7 THEN chCantidadHoras ELSE '' END) AS Sabado
+        idControlHora,idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras,maqNombre,
+        SUM(CASE WHEN idMaquinaFk = idMaquinaFK THEN chCantidadHoras ELSE 0 END) AS total,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '1' THEN chCantidadHoras ELSE 0 END) AS Domingo,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '2' THEN chCantidadHoras ELSE 0 END) AS Lunes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '3' THEN chCantidadHoras ELSE 0 END) AS Martes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '4' THEN chCantidadHoras ELSE 0 END) AS Miercoles,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '5' THEN chCantidadHoras ELSE 0 END) AS Jueves,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '6' THEN chCantidadHoras ELSE 0 END) AS Viernes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '7' THEN chCantidadHoras ELSE 0 END) AS Sabado
         FROM
         ??
         JOIN maquinas on idMaquinaFK = idMaquina
         WHERE  YEARWEEK(chFecha) = YEARWEEK(CURDATE())
-        GROUP BY idMaquinaFK;
+        GROUP BY idMaquinaFK
         `;
 
         const sqlPreparing = ['controlHoras'];
