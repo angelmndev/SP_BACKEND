@@ -22,7 +22,14 @@ const ListarControlHoras = async(req,res) => {
 }
 
 
+const ListarControlHorasPorFecha = async(req,res) => {
+    const {fechaInicio,fechaFin,idMaquinaFK} = req.params;
+    const response = await ControlHorasModel.ListarControlHorasPorFecha(fechaInicio,fechaFin,idMaquinaFK);
+    res.status(200).json(response);
+}
+
 module.exports = {
     AgregarControlHoras,
-    ListarControlHoras
+    ListarControlHoras,
+    ListarControlHorasPorFecha
 };

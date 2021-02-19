@@ -1,6 +1,8 @@
 const MantPreventivoModel = require('../model/MantPreventivoModel');
 
 const AgregarMantPreventivo = async(req,res)=>{
+    console.log("controller");
+    console.log("controller MP",req.body);
     const {
         idMaquinaFK, 
         idSistemaFK, 
@@ -8,12 +10,10 @@ const AgregarMantPreventivo = async(req,res)=>{
         mpTarea, 
         idTipoMantenimientoFK, 
         mpFrecuenciaHoras, 
-        mpHorasAcumuladas, 
-        mpStatus, 
-        mpFecha, 
         mpRiesgoIdentificado, 
+        mpNivelRiesgo,
         idUsuarioFK
-    } = req.body;
+    } = req.body[0];
 
     console.log("Usuario===========>");
     console.log(idUsuarioFK)
@@ -24,11 +24,9 @@ const AgregarMantPreventivo = async(req,res)=>{
         idComponenteFK,
         mpTarea,
         idTipoMantenimientoFK,
-        mpFrecuenciaHoras,
-        mpHorasAcumuladas,
-        mpStatus,
-        mpFecha,
+        mpFrecuenciaHoras,        
         mpRiesgoIdentificado,
+        mpNivelRiesgo,
         idUsuarioFK
     )
 
@@ -39,12 +37,22 @@ const AgregarMantPreventivo = async(req,res)=>{
 }
 
 const ListarAgregarMantPreventivo = async(req,res) => {
+    console.log("lista")
     const MantPreventivo = await MantPreventivoModel.ListarAgregarMantPreventivo();
+    res.status(200).json(MantPreventivo);
+}
+
+const ListarMantPreventivoFiltrado = async(req,res) => {
+    console.log("controller filter:")
+    const { idMaquinaFK, mpFecha, idTipoMantenimientoFK} = req.params;
+    console.log(idMaquinaFK,mpFecha,idTipoMantenimientoFK);
+    const MantPreventivo = await MantPreventivoModel.ListarMantPreventivoFiltrado(idMaquinaFK,mpFecha,idTipoMantenimientoFK);
     res.status(200).json(MantPreventivo);
 }
 
 
 module.exports = {
     AgregarMantPreventivo,
-    ListarAgregarMantPreventivo
+    ListarAgregarMantPreventivo,
+    ListarMantPreventivoFiltrado
 }

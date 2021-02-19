@@ -2,11 +2,8 @@ const LoginModel = require('../model/LoginModel');
 
 
 const showLogin = async(req,res) =>{
-    console.log("controller");
     const {usuUsuario,usuPassword} = req.body;
-    console.log(req.body);
     const response = await LoginModel.showLogin(usuUsuario,usuPassword);
-    console.log(response);
     if(response.length>0){
         res.status(200).json({success: true, usuario: response});
     }else{

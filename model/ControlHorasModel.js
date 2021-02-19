@@ -63,6 +63,30 @@ class ControlHorasModel{
         console.log(response);
         return response;
     }
+
+    static async ListarControlHorasPorFecha(fechaInicio,fechaFin,idMaquinaFK){
+        const sqlSentence = `SELECT
+        idControlHora,idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras,maqNombre,
+        SUM(CASE WHEN idMaquinaFk = idMaquinaFK THEN chCantidadHoras ELSE 0 END) AS total,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '1' THEN chCantidadHoras ELSE 0 END) AS Domingo,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '2' THEN chCantidadHoras ELSE 0 END) AS Lunes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '3' THEN chCantidadHoras ELSE 0 END) AS Martes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '4' THEN chCantidadHoras ELSE 0 END) AS Miercoles,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '5' THEN chCantidadHoras ELSE 0 END) AS Jueves,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '6' THEN chCantidadHoras ELSE 0 END) AS Viernes,
+        SUM(CASE WHEN DAYOFWEEK(chFecha) = '7' THEN chCantidadHoras ELSE 0 END) AS Sabado
+        FROM
+        ??
+        JOIN maquinas on idMaquinaFK = idMaquina
+        WHERE chfecha between cast(? as date) and cast(? as date) and idMaquinaFK = ?
+        GROUP BY idMaquinaFK`;
+        const sqlPreparing = ['controlhoras',fechaInicio,fechaFin,idMaquinaFK];
+        const sql = await db.format(sqlSentence,sqlPreparing);
+        const response = await db.format(sql);
+
+        return response;
+        
+    }
 }
 
 module.exports = ControlHorasModel;

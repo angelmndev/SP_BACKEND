@@ -19,7 +19,7 @@ app.use('/rol',rol)
 
 //Mantenimiento preventivo
 const mantPreventivo = require('./route/MantPreventivoRouter');
-app.use('/matenimiento',mantPreventivo);
+app.use('/mantenimiento',mantPreventivo);
 
 //Maquinas 
 const maquinas = require('./route/MaquinasRouter');
@@ -37,6 +37,32 @@ app.use('/login', login)
 const usuarios = require('./route/usuarios');
 app.use('/usuarios', usuarios)
 
+//Tipo de mantenimeinto
+const tipoMantenimiento = require('./route/TipoMantenimientoRouter');
+app.use('/tipoMantenimiento', tipoMantenimiento);
+
+const sistemas = require('./route/SistemasRouter');
+app.use('/sistemas',sistemas);
+
+const componente = require('./route/ComponenteRouter');
+app.use('/componentes',componente);
+
+//Orden
+const ordenTrabajo = require('./route/OrdenTrabajoRouter');
+app.use('/ordenTrabajo', ordenTrabajo);
+
+//orden trabajo detalle
+const ordenTrabajoDetalle = require('./route/OrdenTrabajoDetalle');
+app.use('/ordenTRabajoDetalle',ordenTrabajoDetalle)
+
+
+//sede
+const sede = require('./route/SedeRouter');
+app.use('/sede',sede);
+
+//Area cultivo
+const areaCultivo = require('./route/AreaCultivoRouter');
+app.use('/areaCultivo',areaCultivo);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

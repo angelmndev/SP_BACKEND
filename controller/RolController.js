@@ -1,4 +1,3 @@
-const { response } = require('express');
 const RolModel = require('../model/RolModel');
 
 /* Agregar rol controller */
