@@ -24,6 +24,7 @@ const ListarControlHoras = async(req,res) => {
 
 const ListarControlHorasPorFecha = async(req,res) => {
     const {fechaInicio,fechaFin,idMaquinaFK} = req.params;
+    console.log("Controller",fechaInicio,fechaFin,idMaquinaFK)
     const response = await ControlHorasModel.ListarControlHorasPorFecha(fechaInicio,fechaFin,idMaquinaFK);
     res.status(200).json(response);
 }

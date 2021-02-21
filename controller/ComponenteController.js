@@ -1,10 +1,10 @@
 const ComponenteModel = require('../model/ComponenteModel');
 
 const AgregarComponente = async(req,res) =>{
-    const {comNombre, comTiempoVida} = req.body;
-    const componente = new ComponenteModel(comNombre,comTiempoVida);
+    const {comNombre} = req.body;
+    const componente = new ComponenteModel(comNombre);
     
-    const response = await componente.AgregarComponente();
+    const response = await componente.AgregarComponentes();
     if(response){
         res.status(200).json({success:true,message: `componente ${comNombre} se guardó exitosamente`});
     }else{

@@ -3,20 +3,17 @@ const db = require('../config/db');
 
 class ComponenteModel{
     #comNombre='';
-    #comTiempoVida = '';
 
 
-    constructor(comNombre, comTiempoVida){
+    constructor(comNombre){
         this.#comNombre = comNombre;
-        this.#comTiempoVida = comTiempoVida;
     }
 
     async AgregarComponentes(){
         try {
             const sqlSentence = "INSERT INTO ?? SET ?";
             const sqlPreparing = ['componentes',{
-                comNombre: this.#comNombre,
-                comTiempoVida: this.#comTiempoVida
+                comNombre: this.#comNombre
             }]
             const sql = await db.format(sqlSentence,sqlPreparing);
             const response = await db.query(sql);

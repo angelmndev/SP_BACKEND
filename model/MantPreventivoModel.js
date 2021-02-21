@@ -97,7 +97,7 @@ class MantPreventivoModel{
     static async ListarMantPreventivoFiltrado(idMaquinaFK, mpFecha, idTipoMantenimientoFK){        
         try {
             const sqlSentence = `
-            SELECT idMaquinaFK,maqNombre,idSistemaFK,sisNombre,idComponenteFK,comNombre,mpTarea 
+            SELECT idMantenimientoPreventivo,idMaquinaFK,maqNombre,idSistemaFK,sisNombre,idComponenteFK,idTipoMantenimientoFK,comNombre,mpTarea 
             FROM ??
             JOIN maquinas ON idMaquinaFK = idMaquina
             JOIN sistemas ON idSistemaFK = idSistema
@@ -114,6 +114,7 @@ class MantPreventivoModel{
             return error;
         }
     }
+    
 
 }
 

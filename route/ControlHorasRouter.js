@@ -4,7 +4,7 @@ const { AgregarControlHoras, ListarControlHoras, ListarControlHorasPorFecha} = r
 
 route.post('/agregar',AgregarControlHoras);
 route.get('/all',ListarControlHoras);
-route.get('/buscar/:fechaIncio/:fechaFin/:idMaquinaFk', ListarControlHorasPorFecha)
+route.get('/buscar/:fechaInicio/:fechaFin/:idMaquinaFK', ListarControlHorasPorFecha)
 
 
 module.exports = route;

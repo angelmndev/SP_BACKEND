@@ -65,6 +65,8 @@ class ControlHorasModel{
     }
 
     static async ListarControlHorasPorFecha(fechaInicio,fechaFin,idMaquinaFK){
+        
+        console.log("Datos filter model: ",fechaInicio,fechaFin,idMaquinaFK)
         const sqlSentence = `SELECT
         idControlHora,idUsuarioFK, chFecha, idMaquinaFK, chCantidadHoras,maqNombre,
         SUM(CASE WHEN idMaquinaFk = idMaquinaFK THEN chCantidadHoras ELSE 0 END) AS total,
@@ -82,9 +84,14 @@ class ControlHorasModel{
         GROUP BY idMaquinaFK`;
         const sqlPreparing = ['controlhoras',fechaInicio,fechaFin,idMaquinaFK];
         const sql = await db.format(sqlSentence,sqlPreparing);
-        const response = await db.format(sql);
+        const response = await db.query(sql);
+
+        console.log(sql);
+        console.log(response);
 
         return response;
+
+        
         
     }
 }
