@@ -76,7 +76,8 @@ class OrdenTrabajoDetalleModel{
                     otdEjecutado: element.otdEjecutado,
                     otdObservacion: element.otdObservacion,
                     idMantenimientoPreventivoFK: element.idMantenimientoPreventivoFK,
-                    idOrdenTrabajoFK: idOrdenTrabajo
+                    idOrdenTrabajoFK: idOrdenTrabajo,
+                    otdEstado: '-'
                 }]
 
                 const sql = await db.format(sqlSentence, sqlPreparing);
@@ -107,9 +108,13 @@ class OrdenTrabajoDetalleModel{
 
     static async ListarOrdenTrabajoDetallePorNumero(numeroOrden){
         const sqlSentence = `
-        SELECT * FROM ??
-        JOIN ordentrabajo on idOrdenTrabajoFk = idOrdenTrabajo
-        WHERE otNumeroOrden = ?
+        SELECT
+        idOrdenTrabjoDetalle,idSistemaFK,sisNombre,idComponenteFK,comNombre,otdTareas,otdEjecutado,otdObservacion
+        FROM ??
+        JOIN ordenTrabajo ON idOrdenTrabajoFk = idOrdenTrabajo
+        JOIN sistemas ON idSistemaFk = idSistema
+        JOIN componentes ON idComponenteFK = idComponente
+        WHERE otNumeroOrden = ? AND otdEstado = '-'
         `
         const sqlPreparing = ['ordentrabajodetalle',numeroOrden];
         const sql = await db.format(sqlSentence,sqlPreparing);
@@ -118,12 +123,11 @@ class OrdenTrabajoDetalleModel{
         return response;
     }
 
-    static async AgregarEjecutadoObservacion(otdEjecutado,otdObservacion,idOrdenTrabajoFK){
-        const sqlSentence = "UPDATE ?? SET otdEjecutado = ? , otdObservacion = ? WHERE idOrdenTrabajoFK = ?";
-        const sqlPreparing = ['ordentrabajodetalle',otdEjecutado,otdObservacion,idOrdenTrabajoFK];
+    static async AgregarEjecutadoObservacion(otdEjecutado,otdObservacion,idOrdenTrabjoDetalle){
+        const sqlSentence = "UPDATE ?? SET otdEjecutado = ? , otdObservacion = ?, otdEstado='1' WHERE idOrdenTrabjoDetalle = ?";
+        const sqlPreparing = ['ordentrabajodetalle',otdEjecutado,otdObservacion,idOrdenTrabjoDetalle];
         const sql = await db.format(sqlSentence,sqlPreparing);
         const response = await db.query(sql)
-
         return response;
     }
 }

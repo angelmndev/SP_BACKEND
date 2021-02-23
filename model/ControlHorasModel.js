@@ -52,10 +52,11 @@ class ControlHorasModel{
         SUM(CASE WHEN DAYOFWEEK(chFecha) = '7' THEN chCantidadHoras ELSE 0 END) AS Sabado
         FROM
         ??
-        JOIN maquinas on idMaquinaFK = idMaquina
-        WHERE  YEARWEEK(chFecha) = YEARWEEK(CURDATE())
+        JOIN maquinas on idMaquinaFK = idMaquina      
         GROUP BY idMaquinaFK
         `;
+
+        //  WHERE  YEARWEEK(chFecha) = YEARWEEK(CURDATE())
 
         const sqlPreparing = ['controlHoras'];
         const sql = await db.format(sqlSentence,sqlPreparing);

@@ -53,7 +53,7 @@ app.use('/ordenTrabajo', ordenTrabajo);
 
 //orden trabajo detalle
 const ordenTrabajoDetalle = require('./route/OrdenTrabajoDetalle');
-app.use('/ordenTRabajoDetalle',ordenTrabajoDetalle)
+app.use('/ordenTrabajoDetalle',ordenTrabajoDetalle)
 
 
 //sede
